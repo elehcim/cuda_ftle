@@ -41,6 +41,24 @@
 __device__ inline void vec(float *x, float t, float *xout)
 {
 
+#define mu 0.1
+r3= ((x[0]+mu)^2 + x[1])^2 )^1.5;     // r: distance to m1, LARGER MASS
+R3= ((x[0]-1+mu)^2 + x[1]^2 )^1.5;    // R: distance to m2, smaller mass
+
+Ux = - x[0] + mu*(x(1)+mu1)/r3 + mu2*(x(1)-mu1)/R3 ;
+Uy = - x[1] + mu* x(2)     /r3 + mu2* x(2)     /R3 ;
+
+xdot = zeros(4,1);
+xdot(1) = x(3);
+xdot(2) = x(4);
+xdot(3) = 2*x(4) - Ux ;
+xdot(4) =-2*x(3) - Uy ;
+
+out1 = xdot;
+
+
+
+
 #define A 0.1
 #define eps 0.25
 #define ome ((2.0/10.0)*M_PI)

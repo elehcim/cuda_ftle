@@ -1,6 +1,6 @@
-<<<<<<< HEAD
+# Backup files
+*~
 
-=======
 # Object files
 *.o
 
@@ -18,4 +18,3 @@
 *.exe
 *.out
 *.app
->>>>>>> 97ddcbc1fc01bfc304e24a8881aee54fde852064
