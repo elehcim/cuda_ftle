@@ -1,0 +1,74 @@
+computeFTLE_CUDA is a small little package that implements
+basic FTLE and fluid dynamics simulations on nVidia GPUs
+via CUDA.
+
+Please read INSTALL and BUGS!
+
+The following interesting tidbits are included:
+-------------------------------------------------------
+
+- src/darwin-gpu-global.cu is a simple rigid body fluid demonstration
+  that shows a base implementation for CUDA. Accuracy not guaranteed.
+
+- computeFTLE_CUDA computes an FTLE field for an explicit
+  vector flow function given by the function vec in vec.c.
+  This program has the ability to output PNG plots of the
+  FTLE field in conjunction with PLplot. Please modify the
+  Makefile as well as settings.h to enable/disable this option.
+
+  The current vectorfield is given in vectorfield.cu; out-of-the
+  box the vector field is a time-dependent double-gyre:
+
+  http://www.cds.caltech.edu/~shawn/LCS-tutorial/examples.html#Sec7.1
+
+
+- graph_data is a small utility for plotting FTLE and tracer data.
+  Small and lightweight, it outperforms PLPlot by an order of
+  magnitude for these specific problems. We recommend using
+  graph_data over PLPlot. To use, see TIPS and graph_data --help.
+
+
+- computeFTLE computes an FTLE field for an explicit
+  vector flow function, and spits the output (at the moment)
+  to a file ftle_1.data, in the format:
+
+  x	y	FTLE
+
+  See the source to replace the vector function or to change
+  t/T/solver parameters. This code is currently obsolete;
+  please compile computeFTLE_CUDA in CUDA emulation mode for
+  the whole suite of features if you don't have a GPU.
+
+- examples/ has a bunch of pictures created using 
+  computeCUDA_FTLE. If interested in specifics, please
+  email Raymond Jimenez <raymondj@caltech.edu>.
+
+Guide for use:
+-------------------------------------------------------
+
+  All of the above have user-servicable parts inside, please open!
+
+  The easiest way to get computeFTLE_CUDA working for your specific
+demonstration is to:
+
+1) Open up src/vectorfield.cu and replace vec() and vec_mask() with
+   your flow equations (look at the examples to see how this should work;
+   it's easiest with a velocity field, but a potential function or
+   stream function can be used with slight difficulty as well)
+ 
+2) Modify settings.h to the necessary window and grid size. Note
+   that the point-offset used in calculating the FTLE field is
+   .001, so a grid that results in more than 500 points per unit
+   may be useless.
+
+3) Run computeFTLE_CUDA and generate output tracer/FTLE files.
+   
+4) Open up src/graph_data.c and modify the vector/tracer masks
+   as you see fit.
+
+5) Run graph_data to get the final output PNGs. You may want
+   to automate this using a simple batch shell script.
+
+--
+Raymond Jimenez <raymondj@caltech.edu>
+Joris Vankerschaver <jvk@cds.caltech.edu>

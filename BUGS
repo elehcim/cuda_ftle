@@ -1,0 +1,14 @@
+Notes about things that are broken/quirks:
+
+This -is- the 0.1 revision of the software, so
+all things should be taken with a grain of salt:
+computational accuracy, speed claims, etc.
+
+However, the following are known to be bad:
+
+2009/08/10: The batch mode appears to lock up after
+a random number of frames in the CUDA tracer code.
+A tested workaround is to add the -v (--verbose)
+flag; yes, this does work inexplicably! --RCJ
+
+

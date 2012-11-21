@@ -1,0 +1,60 @@
+TIPS:
+-----
+
+computeFTLE_CUDA provides the tools for making neat
+animations, such as a batch mode, but it'll help if 
+you do the following:
+
+- Output to a local drive
+
+  If you're working with a relatively small, parallelizable
+  vectorfield expression, the limiting factor in computeFTLE_CUDA's
+  speed may be disk bandwidth. Each frame is written to disk
+  after it is computed, and a 1024x1024 grid of tracers comes
+  out to 50MB, not to mention the reverse and backwards FTLE
+  fields. Fast drives are important, and they'll also speed 
+  up graph_data for visualization.
+
+- Use graph_data
+
+  PLPlot is a very nice graphing library, but in the instances
+  where you need to exchange things like antialiasing for
+  speed, graph_data wins hands down. Here are the drawbacks
+  of graph_data:
+  
+   * Locked to this current data format
+
+   * 1-to-1 correspondence between FTLE pixels and screen 
+     pixels
+   * No anti-aliasing support
+
+   * Rounding errors when dealing with tracer placement
+     (when it comes to plotting tracers, graph_data knows
+     only about the x-by-y pixel grid; it rounds off to
+     ensure every tracer is drawn cleanly on a pixel b
+     boundary)
+
+   * No provision for labeling axes or any legends at all
+
+  The upsides, however, are:
+  
+   * Really quite fast
+     (100x faster than PLPlot for the same output, since graph_data
+     blitzes pixels individually instead of drawing
+     successive polygons)
+   
+   * Separatable from FTLE/tracer computation
+     If you want to run the FTLE computations on one
+     machine, and then visualize on a different machine
+     due to diskspace/CPU requirements, this is
+     the way to go.
+
+   * Only requires libGD
+
+  graph_data takes any set of files spit out by computeFTLE_CUDA.
+  This is important---any -set- of files should work. If the files
+  are from different runs, it will likely crash or error.
+
+  You may need to modify graph_data if you want to alter 
+  the tracer color scheme, the FTLE color scheme, or the
+  FTLE/tracer masks.

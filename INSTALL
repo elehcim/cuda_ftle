@@ -1,0 +1,14 @@
+INSTALL
+=======
+
+Edit the Makefile to tailor it to your setup
+(you will most likely need to toss in CFLAGS/LDFLAGS 
+depending on where CUDA is and if you want PLplot.)
+Please read the README before doing this!
+
+Run make.
+
+Binaries will appear in bin/; copy them to your
+binary directory of choice.
+
+
