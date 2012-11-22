@@ -40,21 +40,31 @@
 
 __device__ inline void vec(float *x, float t, float *xout)
 {
+/*
+TODO:
+ - fare in modo che questa funzione sia trattabile da RK4
+
+*/
 
 #define mu 0.1
-r3= ((x[0]+mu)^2 + x[1])^2 )^1.5;     // r: distance to m1, LARGER MASS
-R3= ((x[0]-1+mu)^2 + x[1]^2 )^1.5;    // R: distance to m2, smaller mass
+  float xdot[4],xn[2]; // temporary x buffers
 
-Ux = - x[0] + mu*(x(1)+mu1)/r3 + mu2*(x(1)-mu1)/R3 ;
-Uy = - x[1] + mu* x(2)     /r3 + mu2* x(2)     /R3 ;
+
+mu1 = 1-mu
+mu2 = mu
+r3 = ((x[0]+mu)^2 + x[1])^2 )^1.5;     // FIXME r: distance to m1, LARGER MASS
+R3 = ((x[0]-1+mu)^2 + x[1]^2 )^1.5;    // FIXME R: distance to m2, smaller mass
+
+Ux = - x[0] + mu*(x[0]+mu1)/r3 + mu2*(x[0]-mu1)/R3 ;	// FIXME
+Uy = - x[1] + mu* x[1]     /r3 + mu2* x[1]     /R3 ;	// FIXME
 
 xdot = zeros(4,1);
-xdot(1) = x(3);
-xdot(2) = x(4);
-xdot(3) = 2*x(4) - Ux ;
-xdot(4) =-2*x(3) - Uy ;
+xdot[0] = x[2];
+xdot[1] = x[3];
+xdot[2] = 2*x[3] - Ux ;
+xdot[3] =-2*x[4] - Uy ;
 
-out1 = xdot;
+xout = xdot;
 
 
 
