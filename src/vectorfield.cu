@@ -50,18 +50,18 @@ TODO:
 float xdot[4] // temporary x buffers
 
 
-mu1 = 1-mu;
-mu2 = mu;
-r3 = ((x[0]+mu2)^2 + x[1])^2 )^1.5;     // r: distance to m1, LARGER MASS
-R3 = ((x[0]-mu1)^2 + x[1]^2 )^1.5;      // R: distance to m2, smaller mass
+#define mu1 = 1-mu
+#define mu2 = mu
+#define r3 = ((x[0]+mu2)^2 + x[1])^2 )^1.5;     // r: distance to m1, LARGER MASS
+#define R3 = ((x[0]-mu1)^2 + x[1]^2 )^1.5;      // R: distance to m2, smaller mass
 
-Ux = - x[0] + mu1*(x[0]+mu2)/r3 + mu2*(x[0]-mu1)/R3 ;
-Uy = - x[1] + mu1* x[1]     /r3 + mu2* x[1]     /R3 ;
+#define Ux = - x[0] + mu1*(x[0]+mu2)/r3 + mu2*(x[0]-mu1)/R3 ;
+#define Uy = - x[1] + mu1* x[1]     /r3 + mu2* x[1]     /R3 ;
 
-xdot[0] = x[2];
-xdot[1] = x[3];
-xdot[2] = 2.0*x[3] - Ux ;
-xdot[3] =-2.0*x[4] - Uy ;
+xout[0] = x[2];
+xout[1] = x[3];
+xout[2] = 2.0*x[3] - Ux ;
+xout[3] =-2.0*x[4] - Uy ;
 
 xout = xdot;
 return
