@@ -26,8 +26,8 @@
 __device__ inline float *RK4(float *x, float t0, float T, float *output)
 {
 
-  float k[2]; // Runge-Kutta term
-  float xpos[2],xn[2]; // temporary x buffers
+  float k[4]; // Runge-Kutta term
+  float xpos[4],xn[4]; // temporary x buffers
 //  int mask;
 
   // emperically "good enough" stepize
@@ -39,13 +39,16 @@ __device__ inline float *RK4(float *x, float t0, float T, float *output)
   // initialize our buffer with our initial state
   xpos[0] = x[0];
   xpos[1] = x[1];
+  xpos[2] = x[2];
+  xpos[3] = x[3];
 
   output[0] = x[0];
   output[1] = x[1];
-
+  output[2] = x[2];
+  output[3] = x[3];
   t = t0;
   
-  if (T<0) 
+  if (T<0)
     h = -h;
 
 // never unroll the following loop, or else there
@@ -57,28 +60,47 @@ __device__ inline float *RK4(float *x, float t0, float T, float *output)
     vec(output, t, k);
     xn[0]=(h/6.0)*k[0];
     xn[1]=(h/6.0)*k[1];
+    xn[2]=(h/6.0)*k[2];
+    xn[3]=(h/6.0)*k[3];
 
     xpos[0] = output[0]+(.5*h*k[0]);
     xpos[1] = output[1]+(.5*h*k[1]);
+    xpos[2] = output[2]+(.5*h*k[2]);
+    xpos[3] = output[3]+(.5*h*k[3]);
+
     vec(xpos, t+(.5*h), k);
     xn[0]+=(h/6.0)*2.0*k[0];
     xn[1]+=(h/6.0)*2.0*k[1];
+    xn[2]+=(h/6.0)*2.0*k[2];
+    xn[3]+=(h/6.0)*2.0*k[3];
 
     xpos[0] = output[0]+(.5*h*k[0]);
     xpos[1] = output[1]+(.5*h*k[1]);
+    xpos[2] = output[2]+(.5*h*k[2]);
+    xpos[3] = output[3]+(.5*h*k[3]);
+
     vec(xpos, t+(.5*h), k);
     xn[0]+=(h/6.0)*2.0*k[0];
     xn[1]+=(h/6.0)*2.0*k[1];
+    xn[2]+=(h/6.0)*2.0*k[2];
+    xn[3]+=(h/6.0)*2.0*k[3];
 
     xpos[0] = output[0]+(h*k[0]);
     xpos[1] = output[1]+(h*k[1]);
+    xpos[2] = output[2]+(h*k[2]);
+    xpos[3] = output[3]+(h*k[3]);
+
     vec(xpos, t+h, k);
     xn[0]+=(h/6.0)*k[0];
     xn[1]+=(h/6.0)*k[1];
+    xn[2]+=(h/6.0)*k[2];
+    xn[3]+=(h/6.0)*k[3];
 
     output[0]+=xn[0];
     output[1]+=xn[1];
-    
+    output[2]+=xn[2];
+    output[3]+=xn[3];
+
     t+=h;
 
 /*
