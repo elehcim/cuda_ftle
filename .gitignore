@@ -1,6 +1,9 @@
 # Backup files
 *~
 
+# Examples folder
+examples/
+
 # Object files
 *.o
 
